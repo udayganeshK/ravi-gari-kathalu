@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ravi's Stories - Telugu Stories Collection</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2 data-te="రవి గరి కథలు" data-en="Ravi's Stories">రవి గరి కథలు</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-te="మొదటి పేజీ" data-en="Home">మొదటి పేజీ</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link" data-te="నా గురించి" data-en="About Me">నా గురించి</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#stories" class="nav-link" data-te="కథలు" data-en="Stories">కథలు</a>
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <div class="language-toggle">
+                    <button id="langToggle" class="lang-btn" title="Switch Language">
+                        <span class="lang-text">EN</span>
+                    </button>
+                </div>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title" data-te="రవి గరి కథలు" data-en="Ravi's Stories">రవి గరి కథలు</h1>
+                <p class="hero-subtitle" data-te="తెలుగు కథల అందమైన సంకలనం" data-en="Beautiful Collection of Telugu Stories">తెలుగు కథల అందమైన సంకలనం</p>
+                <p class="hero-description" data-te="జీవిత అనుభవాలు, కుటుంబ కధలు, ప్రయాణ వృత్తాంతాలు మరియు మనసుని తాకే చిన్న చిన్న క్షణాలతో నిండిన కథల సంకలనం." data-en="A collection of stories filled with life experiences, family tales, travel narratives, and touching moments that resonate with the heart.">
+                    జీవిత అనుభవాలు, కుటుంబ కధలు, ప్రయాణ వృత్తాంతాలు మరియు మనసుని తాకే చిన్న చిన్న క్షణాలతో నిండిన కథల సంకలనం.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="totalStories">412</span>
+                        <span class="stat-label" data-te="కథలు" data-en="Stories">కథలు</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label" data-te="సంవత్సరాలు" data-en="Years">సంవత్సరాలు</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label" data-te="వర్గాలు" data-en="Categories">వర్గాలు</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToStories()">
+                    <i class="fas fa-book-open"></i>
+                    <span data-te="కథలు చదవండి" data-en="Read Stories">కథలు చదవండి</span>
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="story-cards-animation">
+                    <div class="story-card-float card-1">
+                        <i class="fas fa-pen-fancy"></i>
+                        <span>రచయిత</span>
+                    </div>
+                    <div class="story-card-float card-2">
+                        <i class="fas fa-book-open"></i>
+                        <span>అనుభవాలు</span>
+                    </div>
+                    <div class="story-card-float card-3">
+                        <i class="fas fa-heart"></i>
+                        <span>జీవితం</span>
+                    </div>
+                    <div class="story-card-float card-4">
+                        <i class="fas fa-feather-alt"></i>
+                        <span>కల్పన</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-te="నా గురించి" data-en="About Me">నా గురించి</h2>
+                <p class="section-subtitle" data-te="కథలు చెప్పే వ్యక్తి" data-en="The Storyteller">కథలు చెప్పే వ్యక్తి</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p data-te="నమస్కారం! నేను రవి. జీవితంలో జరిగే చిన్న చిన్న సంఘటనలను, అనుభవాలను కథల రూపంలో వ్రాయడం నాకు చాలా ఇష్టం. కుటుంబంతో జరిగే మధుర క్షణాలు, ప్రయాణాలలో కలిసే ఆసక్తికరమైన వ్యక్తులు, రోజువారీ జీవితంలో నేర్చుకునే పాఠాలు - ఇవన్నీ నా కథలలో స్థానం పొందుతాయి." data-en="Hello! I'm Ravi. I love writing about the small incidents and experiences that happen in life in the form of stories. Sweet moments with family, interesting people I meet during travels, lessons learned in daily life - all of these find their place in my stories.">
+                        నమస్కారం! నేను రవి. జీవితంలో జరిగే చిన్న చిన్న సంఘటనలను, అనుభవాలను కథల రూపంలో వ్రాయడం నాకు చాలా ఇష్టం. 
+                        కుటుంబంతో జరిగే మధుర క్షణాలు, ప్రయాణాలలో కలిసే ఆసక్తికరమైన వ్యక్తులు, రోజువారీ జీవితంలో నేర్చుకునే పాఠాలు - 
+                        ఇవన్నీ నా కథలలో స్థానం పొందుతాయి.
+                    </p>
+                    <p data-te="2021 నుంచి ఈ కథలు వ్రాయడం మొదలుపెట్టాను. ఇప్పటికి 412 కథలు పూర్తయ్యాయి. ప్రతి కథ నా జీవితంలో జరిగిన నిజమైన సంఘటన లేదా నేను చూసిన, వినిన ఆసక్తికరమైన విషయం." data-en="I started writing these stories in 2021. So far, 412 stories have been completed. Each story is a real incident from my life or an interesting thing I've seen or heard.">
+                        2021 నుంచి ఈ కథలు వ్రాయడం మొదలుపెట్టాను. ఇప్పటికి 412 కథలు పూర్తయ్యాయి. 
+                        ప్రతి కథ నా జీవితంలో జరిగిన నిజమైన సంఘటన లేదా నేను చూసిన, వినిన ఆసక్తికరమైన విషయం.
+                    </p>
+                    <div class="about-highlights">
+                        <div class="highlight">
+                            <i class="fas fa-heart"></i>
+                            <span data-te="కుటుంబ కధలు" data-en="Family Stories">కుటుంబ కధలు</span>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span data-te="ప్రయాణ వృత్తాంతాలు" data-en="Travel Stories">ప్రయాణ వృత్తాంతాలు</span>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-child"></i>
+                            <span data-te="పిల్లల కధలు" data-en="Children's Stories">పిల్లల కధలు</span>
+                        </div>
+                        <div class="highlight">
+                            <i class="fas fa-lightbulb"></i>
+                            <span data-te="జీవిత పాఠాలు" data-en="Life Lessons">జీవిత పాఠాలు</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Section -->
+    <section id="stories" class="stories">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-te="కథలు" data-en="Stories">కథలు</h2>
+                <p class="section-subtitle" data-te="మీకు నచ్చిన కధలను ఎంచుకుని చదవండి" data-en="Choose and read your favorite stories">మీకు నచ్చిన కధలను ఎంచుకుని చదవండి</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="yearFilter" data-te="సంవత్సరం:" data-en="Year:">సంవత్సరం:</label>
+                    <select id="yearFilter">
+                        <option value="" data-te="అన్ని సంవత్సరాలు" data-en="All Years">అన్ని సంవత్సరాలు</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="categoryFilter" data-te="వర్గం:" data-en="Category:">వర్గం:</label>
+                    <select id="categoryFilter">
+                        <option value="" data-te="అన్ని వర్గాలు" data-en="All Categories">అన్ని వర్గాలు</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="lengthFilter" data-te="పొడవు:" data-en="Length:">పొడవు:</label>
+                    <select id="lengthFilter">
+                        <option value="" data-te="అన్ని పొడవులు" data-en="All Lengths">అన్ని పొడవులు</option>
+                        <option value="short" data-te="చిన్న కధలు" data-en="Short Stories">చిన్న కధలు</option>
+                        <option value="long" data-te="పెద్ద కధలు" data-en="Long Stories">పెద్ద కధలు</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="searchInput" data-te-placeholder="కథలలో వెతకండి..." data-en-placeholder="Search in stories..." placeholder="కథలలో వెతకండి...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+
+            <!-- Stories Grid -->
+            <div class="stories-grid" id="storiesGrid">
+                <!-- Stories will be loaded here by JavaScript -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button id="loadMoreBtn" class="load-more-btn">
+                    <i class="fas fa-plus"></i>
+                    <span data-te="మరిన్ని కథలు చూడండి" data-en="Load More Stories">మరిన్ని కథలు చూడండి</span>
+                </button>
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3 data-te="కథలు కనిపించలేదు" data-en="No Stories Found">కథలు కనిపించలేదు</h3>
+                <p data-te="మీ వెతుకుట ప్రమాణాలకు సరిపోయే కధలు లేవు. దయచేసి వేరే పదాలతో వెతకండి." data-en="No stories match your search criteria. Please try searching with different terms.">మీ వెతుకుట ప్రమాణాలకు సరిపోయే కధలు లేవు. దయచేసి వేరే పదాలతో వెతకండి.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Modal -->
+    <div id="storyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="story-meta">
+                    <span class="story-year"></span>
+                    <span class="story-wordcount"></span>
+                    <div class="story-categories"></div>
+                </div>
+                <div id="modalContent" class="story-content">
+                    <!-- Story content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3 data-te="రవి గరి కథలు" data-en="Ravi's Stories">రవి గరి కథలు</h3>
+                    <p data-te="తెలుగు కథల అందమైన సంకలనం" data-en="Beautiful Collection of Telugu Stories">తెలుగు కథల అందమైన సంకలనం</p>
+                </div>
+                <div class="footer-stats">
+                    <div class="footer-stat">
+                        <span class="number">412</span>
+                        <span class="label" data-te="కథలు" data-en="Stories">కథలు</span>
+                    </div>
+                    <div class="footer-stat">
+                        <span class="number">2021-2024</span>
+                        <span class="label" data-te="కాలం" data-en="Period">కాలం</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-te="&copy; 2024 రవి గరి కథలు. అన్ని హక్కులు రక్షితమైనవి." data-en="&copy; 2024 Ravi's Stories. All rights reserved.">&copy; 2024 రవి గరి కథలు. అన్ని హక్కులు రక్షితమైనవి.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
