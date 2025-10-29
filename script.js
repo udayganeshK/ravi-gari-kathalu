@@ -93,7 +93,17 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadStories() {
     try {
         const response = await fetch('stories-data.json');
-        allStories = await response.json();
+        const storiesData = await response.json();
+        
+        // Convert object structure to flat array
+        allStories = [];
+        for (const year in storiesData) {
+            storiesData[year].forEach(story => {
+                story.year = year; // Add year property to each story
+                allStories.push(story);
+            });
+        }
+        
         filteredStories = [...allStories];
         
         populateFilters();
