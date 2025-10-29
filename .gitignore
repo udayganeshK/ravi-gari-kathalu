@@ -1,6 +1,6 @@
-# Python scripts and analysis files
-*.py
+# CSV data files (but keep the update script)
 *.csv
+!update_stories.py
 
 # Python cache
 __pycache__/

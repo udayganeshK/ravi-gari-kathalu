@@ -1,0 +1,2 @@
+# Dependencies for Telugu Stories Data Updater
+pandas>=1.5.0

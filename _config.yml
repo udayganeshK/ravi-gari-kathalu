@@ -1,0 +1,45 @@
+title: Telugu Stories Digital Archive
+description: Full-Stack Web Application for Cultural Content Management
+author: 
+  name: Uday Ganesh
+  github: udayganeshK
+url: https://udayganeshk.github.io/ravi-gari-kathalu
+baseurl: /ravi-gari-kathalu
+
+# SEO settings
+lang: te
+locale: te_IN
+
+# Social media
+twitter:
+  username: udayganeshk
+  card: summary_large_image
+
+github:
+  repository_url: https://github.com/udayganeshK/ravi-gari-kathalu
+
+# Technical specifications
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Collections
+collections:
+  stories:
+    output: true
+    permalink: /:collection/:year/:name/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-relative-links
+
+# Build settings
+exclude:
+  - "*.py"
+  - "*.csv"
+  - README.md
+  - .gitignore
+  - .git/

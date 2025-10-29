@@ -1,0 +1,52 @@
+{
+  "name": "telugu-stories-digital-archive",
+  "version": "1.0.0",
+  "description": "Full-Stack Web Application for Cultural Content Management - Digital archive of Telugu stories with advanced search and responsive design",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'Tests will be implemented'",
+    "validate": "html5validator --root . --also-check-css",
+    "lint:css": "stylelint **/*.css",
+    "lint:js": "eslint **/*.js",
+    "deploy": "gh-pages -d .",
+    "analyze": "python analyze_stories.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/udayganeshK/ravi-gari-kathalu.git"
+  },
+  "keywords": [
+    "telugu",
+    "stories",
+    "literature",
+    "digital-archive",
+    "responsive-design",
+    "cultural-preservation",
+    "javascript",
+    "html5",
+    "css3",
+    "frontend-development"
+  ],
+  "author": "Uday Ganesh K",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/udayganeshK/ravi-gari-kathalu/issues"
+  },
+  "homepage": "https://udayganeshk.github.io/ravi-gari-kathalu/",
+  "devDependencies": {
+    "html5validator": "^0.4.2",
+    "stylelint": "^14.0.0",
+    "eslint": "^8.0.0",
+    "gh-pages": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
