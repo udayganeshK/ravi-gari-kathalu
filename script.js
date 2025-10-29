@@ -452,7 +452,7 @@ function createStoryCard(story) {
                     ${categoryTag}
                     ${lengthTag}
                 </div>
-                <button class="read-more" onclick="event.stopPropagation(); openStoryModal(arguments[0])" data-story='${JSON.stringify(story)}'>
+                <button class="read-more">
                     ${readMoreText} <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
@@ -516,33 +516,68 @@ function hideNoResults() {
 
 // Open story modal
 async function openStoryModal(story) {
+    console.log('Opening modal for story:', story.title);
+    
+    if (!story || !story.file) {
+        console.error('Invalid story data:', story);
+        return;
+    }
+    
+    // Check if modal elements exist
+    if (!modal || !modalTitle || !modalContent) {
+        console.error('Modal elements not found');
+        return;
+    }
+    // Check if modal elements exist
+    if (!modal || !modalTitle || !modalContent) {
+        console.error('Modal elements not found');
+        return;
+    }
+    
     modalTitle.textContent = story.title;
     
     // Set story metadata
     const storyMeta = modal.querySelector('.story-meta');
-    const yearSpan = storyMeta.querySelector('.story-year');
-    const wordCountSpan = storyMeta.querySelector('.story-wordcount');
-    const categoriesDiv = storyMeta.querySelector('.story-categories');
-    
-    const wordsText = translations.ui[currentLanguage]['words'];
-    
-    yearSpan.textContent = story.year;
-    wordCountSpan.textContent = `${story.wordCount} ${wordsText}`;
-    
-    // Add categories
-    categoriesDiv.innerHTML = story.categories
-        .map(cat => `<span class="category-tag ${cat}">${getCategoryDisplayName(cat)}</span>`)
-        .join('');
+    if (storyMeta) {
+        const yearSpan = storyMeta.querySelector('.story-year');
+        const wordCountSpan = storyMeta.querySelector('.story-wordcount');
+        const categoriesDiv = storyMeta.querySelector('.story-categories');
+        
+        const wordsText = translations.ui[currentLanguage]['words'] || 'words';
+        const wordCount = Math.round(story.text_length / 5); // Estimate words
+        
+        if (yearSpan) yearSpan.textContent = story.year;
+        if (wordCountSpan) wordCountSpan.textContent = `${wordCount} ${wordsText}`;
+        
+        // Add auto-categorized tags
+        if (categoriesDiv) {
+            const autoCategory = categorizeStory(story);
+            const isShort = story.text_length < 1000;
+            const lengthTag = isShort ? 'short' : 'long';
+            
+            categoriesDiv.innerHTML = `
+                <span class="category-tag ${autoCategory}">${getCategoryDisplayName(autoCategory)}</span>
+                <span class="category-tag ${lengthTag}">${getCategoryDisplayName(lengthTag)}</span>
+            `;
+        }
+    }
 
     // Load story content
-    const loadingText = translations.ui[currentLanguage]['storyLoading'];
+    const loadingText = translations.ui[currentLanguage]['storyLoading'] || 'Loading story...';
     modalContent.innerHTML = `<div style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>${loadingText}</div>`;
     
+    // Show modal
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
 
     try {
+        console.log('Fetching story file:', story.file);
         const response = await fetch(story.file);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
@@ -556,6 +591,11 @@ async function openStoryModal(story) {
         
         // Get clean text content and format it
         const textContent = bodyContent.textContent || bodyContent.innerText || '';
+        if (!textContent || textContent.trim() === '') {
+            modalContent.innerHTML = '<p>కథ కంటెంట్ లోడ్ చేయలేకపోయాము.</p>';
+            return;
+        }
+        
         const paragraphs = textContent
             .split('\n')
             .map(line => line.trim())
@@ -564,14 +604,18 @@ async function openStoryModal(story) {
             .filter(line => !line.includes('మొదటి పేజీ'))
             .filter(line => !line.includes('కథలు గురించి'));
 
-        modalContent.innerHTML = paragraphs
-            .map(paragraph => `<p>${paragraph}</p>`)
-            .join('');
+        if (paragraphs.length > 0) {
+            modalContent.innerHTML = paragraphs
+                .map(paragraph => `<p>${paragraph}</p>`)
+                .join('');
+        } else {
+            modalContent.innerHTML = '<p>కథ కంటెంట్ లోడ్ చేయలేకపోయాము.</p>';
+        }
 
     } catch (error) {
-        console.error('Error loading story content:', error);
-        const errorText = translations.ui[currentLanguage]['storyError'];
-        modalContent.innerHTML = `<p style="color: #e91e63; text-align: center;">${errorText}</p>`;
+        console.error('Error loading story:', error);
+        const errorText = translations.ui[currentLanguage]['storyError'] || 'Error loading story';
+        modalContent.innerHTML = `<div style="text-align: center; padding: 2rem; color: #e74c3c;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>${errorText}</div>`;
     }
 }
 
