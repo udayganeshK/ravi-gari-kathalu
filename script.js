@@ -51,19 +51,19 @@ const translations = {
     ui: {
         te: {
             'words': 'పదాలు',
-            'readMore': 'చదవండి',
-            'loadMore': 'మరో {count} కథలు చూడండి',
-            'loadMoreDefault': 'మరిన్ని కథలు చూడండి',
-            'storyLoading': 'కథ లోడ్ అవుతోంది...',
-            'storyError': 'కథ లోడ్ చేయడంలో లోపం జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.'
+            'readMore': 'మరింత చదవండి',
+            'loadMore': 'మరిన్ని కథలు లోడ్ చేయండి ({count})',
+            'loadMoreDefault': 'మరిన్ని కథలు లోడ్ చేయండి',
+            'storyLoading': 'కథ లోడ్ చేస్తున్నాం...',
+            'storyError': 'కథ లోడ్ చేయడంలో లోపం'
         },
         en: {
             'words': 'words',
             'readMore': 'Read More',
-            'loadMore': 'Show {count} more stories',
+            'loadMore': 'Load More Stories ({count})',
             'loadMoreDefault': 'Load More Stories',
             'storyLoading': 'Loading story...',
-            'storyError': 'Error loading story. Please try again.'
+            'storyError': 'Error loading story'
         }
     }
 };
@@ -135,14 +135,11 @@ function populateFilters() {
         yearFilter.appendChild(option);
     });
 
-    // Category filter
+    // Category filter - use auto-categorization
     const categories = new Set();
     allStories.forEach(story => {
-        story.categories.forEach(cat => {
-            if (cat !== 'short' && cat !== 'long') {
-                categories.add(cat);
-            }
-        });
+        const autoCategory = categorizeStory(story);
+        categories.add(autoCategory);
     });
     
     [...categories].sort().forEach(category => {
@@ -317,14 +314,18 @@ function applyFilters() {
             return false;
         }
 
-        // Category filter
-        if (categoryValue && !story.categories.includes(categoryValue)) {
+        // Category filter - use auto-categorization
+        if (categoryValue && categorizeStory(story) !== categoryValue) {
             return false;
         }
 
-        // Length filter
-        if (lengthValue && !story.categories.includes(lengthValue)) {
-            return false;
+        // Length filter (based on text_length)
+        if (lengthValue) {
+            const isShort = story.text_length < 1000;
+            const isLong = story.text_length >= 1000;
+            if ((lengthValue === 'short' && !isShort) || (lengthValue === 'long' && !isLong)) {
+                return false;
+            }
         }
 
         // Search filter
@@ -368,46 +369,105 @@ function renderStories() {
     });
 }
 
+// Function to categorize story based on title and content
+function categorizeStory(story) {
+    const title = story.title.toLowerCase();
+    
+    // Family related keywords
+    if (title.includes('అమ్మ') || title.includes('నాన్న') || title.includes('కుటుంబ') || 
+        title.includes('పెళ్లి') || title.includes('వివాహ') || title.includes('అల్లుడు') ||
+        title.includes('కోడలు') || title.includes('వదిన') || title.includes('family')) {
+        return 'family';
+    }
+    
+    // Travel related
+    if (title.includes('ప్రయాణ') || title.includes('యాత్ర') || title.includes('ట్రిప్') || 
+        title.includes('travel') || title.includes('trip') || title.includes('విమాన') ||
+        title.includes('రైలు') || title.includes('బస్')) {
+        return 'travel';
+    }
+    
+    // Spiritual/Religious
+    if (title.includes('దేవుడు') || title.includes('భగవాన్') || title.includes('పూజ') || 
+        title.includes('మంత్ర') || title.includes('స్తోత్ర') || title.includes('spiritual') ||
+        title.includes('శ్రీ') || title.includes('గణేశ') || title.includes('విష్ణు') ||
+        title.includes('శివ') || title.includes('దేవ') || title.includes('దేవి')) {
+        return 'spiritual';
+    }
+    
+    // Philosophical/Life lessons
+    if (title.includes('జీవిత') || title.includes('తత్వ') || title.includes('జ్ఞాన') || 
+        title.includes('విషయ') || title.includes('అనుభవ') || title.includes('lesson') ||
+        title.includes('wisdom') || title.includes('philosophical')) {
+        return 'philosophical';
+    }
+    
+    // Kids/Children
+    if (title.includes('పిల్లల') || title.includes('చిన్న') || title.includes('బాల') || 
+        title.includes('పాప') || title.includes('kids') || title.includes('children') ||
+        title.includes('బుడ్డి') || title.includes('అబ్బాయి') || title.includes('అమ్మాయి')) {
+        return 'kids';
+    }
+    
+    // Default to general
+    return 'general';
+}
+
 // Create a story card element
 function createStoryCard(story) {
     const card = document.createElement('div');
     card.className = 'story-card';
-    card.onclick = () => openStoryModal(story);
+    card.onclick = (e) => {
+        e.preventDefault();
+        openStoryModal(story);
+        return false;
+    };
 
-    const categories = story.categories
-        .filter(cat => cat !== 'short' && cat !== 'long')
-        .slice(0, 3)
-        .map(cat => `<span class="category-tag ${cat}">${getCategoryDisplayName(cat)}</span>`)
-        .join('');
+    // Auto-categorize the story
+    const autoCategory = categorizeStory(story);
+    const categoryTag = `<span class="category-tag ${autoCategory}">${getCategoryDisplayName(autoCategory)}</span>`;
 
-    const lengthTag = story.categories.includes('short') ? 
+    // Determine length based on text_length
+    const isShort = story.text_length < 1000;
+    const lengthTag = isShort ? 
         `<span class="category-tag short">${getCategoryDisplayName('short')}</span>` : 
         `<span class="category-tag long">${getCategoryDisplayName('long')}</span>`;
 
-    const wordsText = translations.ui[currentLanguage]['words'];
-    const readMoreText = translations.ui[currentLanguage]['readMore'];
+    const wordsText = translations.ui[currentLanguage]['words'] || 'words';
+    const readMoreText = translations.ui[currentLanguage]['readMore'] || 'Read More';
+    const wordCount = Math.round(story.text_length / 5); // Estimate words from characters
 
     card.innerHTML = `
         <div class="story-card-header">
             <h3 class="story-card-title">${story.title}</h3>
             <div class="story-card-meta">
                 <span><i class="fas fa-calendar"></i> ${story.year}</span>
-                <span><i class="fas fa-file-word"></i> ${story.wordCount} ${wordsText}</span>
+                <span><i class="fas fa-file-word"></i> ${wordCount} ${wordsText}</span>
             </div>
         </div>
         <div class="story-card-content">
-            <p class="story-card-excerpt">${story.excerpt}</p>
+            <p class="story-card-excerpt">${story.title}</p>
             <div class="story-card-footer">
                 <div class="story-categories">
-                    ${categories}
+                    ${categoryTag}
                     ${lengthTag}
                 </div>
-                <a href="#" class="read-more">
+                <button class="read-more" onclick="event.stopPropagation(); openStoryModal(arguments[0])" data-story='${JSON.stringify(story)}'>
                     ${readMoreText} <i class="fas fa-arrow-right"></i>
-                </a>
+                </button>
             </div>
         </div>
     `;
+
+    // Add click handler for read more buttons
+    const readMoreBtn = card.querySelector('.read-more');
+    if (readMoreBtn) {
+        readMoreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openStoryModal(story);
+        });
+    }
 
     return card;
 }
@@ -482,7 +542,7 @@ async function openStoryModal(story) {
     document.body.style.overflow = 'hidden';
 
     try {
-        const response = await fetch(story.filename);
+        const response = await fetch(story.file);
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
