@@ -1,6 +1,7 @@
-# CSV data files (but keep the update script)
+# CSV data files (but keep the update scripts)
 *.csv
 !update_stories.py
+!rebuild_from_csv.py
 
 # Python cache
 __pycache__/
