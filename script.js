@@ -373,21 +373,14 @@ function renderStories() {
 function categorizeStory(story) {
     const title = story.title.toLowerCase();
     
-    // Family related keywords
+    // Family related keywords (highest priority)
     if (title.includes('అమ్మ') || title.includes('నాన్న') || title.includes('కుటుంబ') || 
         title.includes('పెళ్లి') || title.includes('వివాహ') || title.includes('అల్లుడు') ||
         title.includes('కోడలు') || title.includes('వదిన') || title.includes('family')) {
         return 'family';
     }
     
-    // Travel related
-    if (title.includes('ప్రయాణ') || title.includes('యాత్ర') || title.includes('ట్రిప్') || 
-        title.includes('travel') || title.includes('trip') || title.includes('విమాన') ||
-        title.includes('రైలు') || title.includes('బస్')) {
-        return 'travel';
-    }
-    
-    // Spiritual/Religious
+    // Spiritual/Religious (second priority)
     if (title.includes('దేవుడు') || title.includes('భగవాన్') || title.includes('పూజ') || 
         title.includes('మంత్ర') || title.includes('స్తోత్ర') || title.includes('spiritual') ||
         title.includes('శ్రీ') || title.includes('గణేశ') || title.includes('విష్ణు') ||
@@ -395,18 +388,25 @@ function categorizeStory(story) {
         return 'spiritual';
     }
     
-    // Philosophical/Life lessons
-    if (title.includes('జీవిత') || title.includes('తత్వ') || title.includes('జ్ఞాన') || 
-        title.includes('విషయ') || title.includes('అనుభవ') || title.includes('lesson') ||
-        title.includes('wisdom') || title.includes('philosophical')) {
-        return 'philosophical';
+    // Travel related (third priority)
+    if (title.includes('ప్రయాణ') || title.includes('యాత్ర') || title.includes('ట్రిప్') || 
+        title.includes('travel') || title.includes('trip') || title.includes('విమాన') ||
+        title.includes('రైలు') || title.includes('బస్')) {
+        return 'travel';
     }
     
-    // Kids/Children
+    // Kids/Children (fourth priority)
     if (title.includes('పిల్లల') || title.includes('చిన్న') || title.includes('బాల') || 
         title.includes('పాప') || title.includes('kids') || title.includes('children') ||
         title.includes('బుడ్డి') || title.includes('అబ్బాయి') || title.includes('అమ్మాయి')) {
         return 'kids';
+    }
+    
+    // Philosophical/Life lessons (fifth priority)
+    if (title.includes('జీవిత') || title.includes('తత్వ') || title.includes('జ్ఞాన') || 
+        title.includes('విషయ') || title.includes('అనుభవ') || title.includes('lesson') ||
+        title.includes('wisdom') || title.includes('philosophical')) {
+        return 'philosophical';
     }
     
     // Default to general
@@ -582,15 +582,26 @@ async function openStoryModal(story) {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         
-        // Extract story content (remove navigation and headers)
-        const bodyContent = doc.body;
+        // Extract story content from the story-body div specifically
+        let storyBodyDiv = doc.querySelector('.story-body');
+        if (!storyBodyDiv) {
+            // Fallback: try to find the main content area
+            storyBodyDiv = doc.querySelector('main .story-content .story-body') || 
+                          doc.querySelector('.story-content') || 
+                          doc.querySelector('article');
+        }
         
-        // Remove script tags, style tags, and navigation elements
-        const elementsToRemove = bodyContent.querySelectorAll('script, style, nav, .nav, .navigation, .header, .footer');
+        if (!storyBodyDiv) {
+            modalContent.innerHTML = '<p>కథ కంటెంట్ లోడ్ చేయలేకపోయాము.</p>';
+            return;
+        }
+        
+        // Remove script tags, style tags, and unwanted elements
+        const elementsToRemove = storyBodyDiv.querySelectorAll('script, style, .story-tags, .tag, nav, .nav, .navigation, .header, .footer');
         elementsToRemove.forEach(el => el.remove());
         
-        // Get clean text content and format it
-        const textContent = bodyContent.textContent || bodyContent.innerText || '';
+        // Get clean text content from story body only
+        const textContent = storyBodyDiv.textContent || storyBodyDiv.innerText || '';
         if (!textContent || textContent.trim() === '') {
             modalContent.innerHTML = '<p>కథ కంటెంట్ లోడ్ చేయలేకపోయాము.</p>';
             return;
