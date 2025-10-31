@@ -75,6 +75,7 @@ const noResults = document.getElementById('noResults');
 const yearFilter = document.getElementById('yearFilter');
 const categoryFilter = document.getElementById('categoryFilter');
 const lengthFilter = document.getElementById('lengthFilter');
+const sortFilter = document.getElementById('sortFilter');
 const searchInput = document.getElementById('searchInput');
 const modal = document.getElementById('storyModal');
 const modalTitle = document.getElementById('modalTitle');
@@ -156,6 +157,7 @@ function setupEventListeners() {
     yearFilter.addEventListener('change', applyFilters);
     categoryFilter.addEventListener('change', applyFilters);
     lengthFilter.addEventListener('change', applyFilters);
+    sortFilter.addEventListener('change', applyFilters);
     searchInput.addEventListener('input', debounce(applyFilters, 300));
 
     // Load more button
@@ -311,6 +313,7 @@ function applyFilters() {
     const yearValue = yearFilter.value;
     const categoryValue = categoryFilter.value;
     const lengthValue = lengthFilter.value;
+    const sortValue = sortFilter.value;
     const searchValue = searchInput.value.toLowerCase().trim();
 
     filteredStories = allStories.filter(story => {
@@ -342,6 +345,28 @@ function applyFilters() {
         }
 
         return true;
+    });
+
+    // Apply sorting
+    filteredStories.sort((a, b) => {
+        switch (sortValue) {
+            case 'oldest':
+                // Sort by creation date (oldest first)
+                const dateA = new Date(a.created_date || a.date || '1900-01-01');
+                const dateB = new Date(b.created_date || b.date || '1900-01-01');
+                return dateA - dateB;
+            
+            case 'title':
+                // Sort alphabetically by title
+                return a.title.localeCompare(b.title, 'te'); // Telugu locale for proper sorting
+            
+            case 'newest':
+            default:
+                // Sort by creation date (newest first) - default
+                const dateC = new Date(a.created_date || a.date || '1900-01-01');
+                const dateD = new Date(b.created_date || b.date || '1900-01-01');
+                return dateD - dateC;
+        }
     });
 
     currentPage = 1;
@@ -441,12 +466,26 @@ function createStoryCard(story) {
     const wordsText = translations.ui[currentLanguage]['words'] || 'words';
     const readMoreText = translations.ui[currentLanguage]['readMore'] || 'Read More';
     const wordCount = Math.round(story.text_length / 5); // Estimate words from characters
+    
+    // Format the creation date for display
+    let displayDate = story.year; // Fallback to year
+    if (story.created_display) {
+        displayDate = story.created_display;
+    } else if (story.created_date) {
+        // Convert YYYY-MM-DD to readable format
+        const dateObj = new Date(story.created_date);
+        displayDate = dateObj.toLocaleDateString(currentLanguage === 'te' ? 'te-IN' : 'en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
 
     card.innerHTML = `
         <div class="story-card-header">
             <h3 class="story-card-title">${story.title}</h3>
             <div class="story-card-meta">
-                <span><i class="fas fa-calendar"></i> ${story.year}</span>
+                <span><i class="fas fa-calendar"></i> ${displayDate}</span>
                 <span><i class="fas fa-file-word"></i> ${wordCount} ${wordsText}</span>
             </div>
         </div>
