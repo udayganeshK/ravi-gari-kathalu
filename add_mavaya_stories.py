@@ -52,8 +52,8 @@ def process_mavaya_stories():
             print(f"Warning: File not found: {filepath}")
             continue
             
-        # Clean up title - remove "- రవి గరి కథలు" suffix if present
-        clean_title = title.replace(" - రవి గరి కథలు", "").strip()
+        # Clean up title - remove "- రవి కావూరు కథలు" suffix if present
+        clean_title = title.replace(" - రవి కావూరు కథలు", "").strip()
         
         # Create story entry
         story_entry = {

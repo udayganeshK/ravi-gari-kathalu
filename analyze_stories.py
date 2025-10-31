@@ -56,7 +56,7 @@ def analyze_html_file(file_path):
         
         return {
             'filename': os.path.basename(file_path),
-            'title': title.replace(' - రవి గరి కథలు', ''),
+            'title': title.replace(' - రవి కావూరు కథలు', ''),
             'category': category,
             'content_length': content_length,
             'year': file_path.split('/')[-2],

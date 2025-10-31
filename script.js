@@ -51,7 +51,7 @@ const translations = {
     ui: {
         te: {
             'words': 'పదాలు',
-            'readMore': 'మరింత చదవండి',
+            'readMore': 'ఇక కథ లోకి',
             'loadMore': 'మరిన్ని కథలు లోడ్ చేయండి ({count})',
             'loadMoreDefault': 'మరిన్ని కథలు లోడ్ చేయండి',
             'storyLoading': 'కథ లోడ్ చేస్తున్నాం...',
@@ -230,7 +230,7 @@ function updateUILanguage() {
     
     // Update page title
     if (currentLanguage === 'te') {
-        document.title = 'రవి గరి కథలు - Telugu Stories Collection';
+        document.title = 'రవి కావూరు కథలు - Telugu Stories Collection';
     } else {
         document.title = 'Ravi\'s Stories - Telugu Stories Collection';
     }
@@ -611,7 +611,7 @@ async function openStoryModal(story) {
             .split('\n')
             .map(line => line.trim())
             .filter(line => line.length > 0)
-            .filter(line => !line.includes('రవి గరి కథలు'))
+            .filter(line => !line.includes('రవి కావూరు కథలు'))
             .filter(line => !line.includes('మొదటి పేజీ'))
             .filter(line => !line.includes('కథలు గురించి'));
 

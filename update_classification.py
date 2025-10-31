@@ -75,7 +75,7 @@ def update_classifications():
         
         story_data = {
             "id": story['filename'].replace('.html', ''),
-            "title": story['title'].replace(' - రవి గరి కథలు', ''),
+            "title": story['title'].replace(' - రవి కావూరు కథలు', ''),
             "filename": story['filename'],
             "year": int(story['year']),
             "category": category,
