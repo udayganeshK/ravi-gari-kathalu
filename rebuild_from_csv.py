@@ -49,6 +49,9 @@ def rebuild_stories_data():
     for _, row in stories_df.iterrows():
         year = str(row['year'])
         title = row['title']
+        
+        # Remove redundant suffix if present
+        title = title.replace(' - రవి కావూరు కథలు', '').replace(' - రవి గరి కథలు', '')
         filename = row['filepath']
         
         if year not in new_stories_data:

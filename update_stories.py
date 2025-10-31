@@ -87,6 +87,9 @@ def update_stories_from_csv():
         for _, row in story_entries.iterrows():
             title = str(row['Title']).strip()
             
+            # Remove redundant suffix if present
+            title = title.replace(' - రవి కావూరు కథలు', '').replace(' - రవి గరి కథలు', '')
+            
             # Skip if title already exists
             if title in existing_titles:
                 continue
