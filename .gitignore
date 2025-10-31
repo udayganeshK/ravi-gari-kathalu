@@ -3,6 +3,12 @@
 !update_stories.py
 !rebuild_from_csv.py
 
+# Utility scripts (keep out of repo)
+check_file_dates.py
+cleanup_stories.py
+extract_file_dates.py
+test_dynamic_count.py
+
 # Python cache
 __pycache__/
 *.pyc
