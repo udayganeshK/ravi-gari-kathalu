@@ -245,6 +245,11 @@ function updateUILanguage() {
     } else {
         searchInput.placeholder = enPlaceholder;
     }
+    
+    // Update story counts after language change
+    if (allStories.length > 0) {
+        updateTotalStoriesCount();
+    }
 }
 function setupNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
@@ -638,9 +643,41 @@ function closeModal() {
 
 // Update total stories count
 function updateTotalStoriesCount() {
+    const storyCount = allStories.length;
+    
+    // Update main stat in hero section
     const totalStoriesElement = document.getElementById('totalStories');
     if (totalStoriesElement) {
-        totalStoriesElement.textContent = allStories.length;
+        totalStoriesElement.textContent = storyCount;
+    }
+    
+    // Update story count in about section
+    const aboutStoryCountElement = document.getElementById('aboutStoryCount');
+    if (aboutStoryCountElement) {
+        aboutStoryCountElement.textContent = storyCount;
+    }
+    
+    // Update story count in footer
+    const footerStoryCountElement = document.getElementById('footerStoryCount');
+    if (footerStoryCountElement) {
+        footerStoryCountElement.textContent = storyCount;
+    }
+    
+    // Update data attributes for language switching
+    const aboutParagraph = aboutStoryCountElement?.parentElement;
+    if (aboutParagraph) {
+        const teText = aboutParagraph.getAttribute('data-te');
+        const enText = aboutParagraph.getAttribute('data-en');
+        
+        if (teText) {
+            const newTeText = teText.replace(/\d+/, storyCount);
+            aboutParagraph.setAttribute('data-te', newTeText);
+        }
+        
+        if (enText) {
+            const newEnText = enText.replace(/\d+/, storyCount);
+            aboutParagraph.setAttribute('data-en', newEnText);
+        }
     }
 }
 
